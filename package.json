@@ -1,16 +1,19 @@
 {
   "name": "vscode-editorjs",
   "displayName": "vscode-editorjs",
-  "description": "",
+  "description": "Editor.js in VS code",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.86.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [],
   "main": "./out/extension.js",
+  "repository": "https://github.com/lemoolu/vscode-editorjs.git",
+  "license": "MIT",
+  "publisher": "lemoolu",
+  "bugs": {
+    "url": "https://github.com/lemoolu/vscode-editorjs/issues"
+  },
   "contributes": {
     "commands": [
       {
@@ -36,7 +39,9 @@
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "package": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies"
   },
   "devDependencies": {
     "@types/vscode": "^1.86.0",
