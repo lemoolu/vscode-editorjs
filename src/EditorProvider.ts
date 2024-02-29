@@ -45,8 +45,8 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
 
     function updateWebview() {
       webviewPanel.webview.postMessage({
-        type: 'update',
-        text: document.getText(),
+        type: 'init',
+        text: this.getDocumentAsJson(),
       });
     }
 
@@ -60,7 +60,7 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
 
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
       if (e.document.uri.toString() === document.uri.toString()) {
-        updateWebview();
+        // updateWebview();
       }
     });
 
@@ -77,7 +77,11 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
       }
     });
 
-    updateWebview();
+    // updateWebview();
+    webviewPanel.webview.postMessage({
+      type: 'init',
+      json: this.getDocumentAsJson(document),
+    });
   }
 
   private onChange(document: vscode.TextDocument, e: any) {
@@ -86,16 +90,11 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
   }
 
   private getHtmlForWebview(webview: vscode.Webview): string {
-    const scriptUri2 = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'media', 'editorjs.umd.js'));
-    const scriptUri3 = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'media', 'index.js'));
+    const editorjs = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'public', 'editorjs.umd.js'));
+    const scriptUri3 = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'index.js'));
 
-    const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'media', 'css/reset.css'));
-
-    const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'media', 'css/vscode.css'));
+    const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'public', 'css/reset.css'));
+    const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'public', 'css/vscode.css'));
 
     // Use a nonce to whitelist which scripts can be run
     const nonce = getNonce();
@@ -123,7 +122,7 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
         <div class="editorjsbg">
           <div id="editorjs"></div>
         </div>
-        <script nonce="${nonce}" src="${scriptUri2}"></script>
+        <script nonce="${nonce}" src="${editorjs}"></script>
         <script nonce="${nonce}" src="${scriptUri3}"></script>
 			</body>
 			</html>`;
