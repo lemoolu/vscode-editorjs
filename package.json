@@ -2,7 +2,7 @@
   "name": "vscode-editorjs",
   "displayName": "vscode-editorjs",
   "description": "Editor.js in VS code",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -37,7 +37,7 @@
     "dev": "webpack --watch --mode=development",
     "build": "webpack",
     "vscode:prepublish": "pnpm run compile",
-    "compile": "tsc -p ./ && build",
+    "compile": "tsc -p ./ && npm run build",
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",

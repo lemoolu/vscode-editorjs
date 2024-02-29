@@ -46,7 +46,7 @@ export class EditorProvider implements vscode.CustomTextEditorProvider {
     function updateWebview() {
       webviewPanel.webview.postMessage({
         type: 'init',
-        text: this.getDocumentAsJson(),
+        text: document.getText(),
       });
     }
 
